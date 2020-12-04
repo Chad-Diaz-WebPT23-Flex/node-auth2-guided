@@ -7,22 +7,24 @@ module.exports = {
   findById,
 };
 
+// modified to join the roles table and return the role name.
 function find() {
-  return db("users").select("id", "username").orderBy("id");
+  return db("users as u")
+    .join("roles as r", "u.role", "r.id")
+    .select("u.id", "u.username", "r.name as rolename");
 }
 
+// modified to join the roles table and return the role name.
 function findBy(filter) {
-  return db("users").where(filter).orderBy("id");
+  return db("users as u")
+    .join("roles as r", "u.role", "r.id")
+    .select("u.id", "u.username", "r.name as rolename", "u.password")
+    .where(filter).orderBy("u.id");
 }
 
 async function add(user) {
-  try {
-    const [id] = await db("users").insert(user, "id");
-
-    return findById(id);
-  } catch (error) {
-    throw error;
-  }
+  const [id] = await db("users").insert(user, "id");
+  return findById(id);
 }
 
 function findById(id) {
