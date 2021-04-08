@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
+const secrets = require('../config/secrets.js')
+
 module.exports = (req, res, next) => {
-  // add code here to verify users are logged in
+  console.log("req object", req.headers)
   next();
 };
